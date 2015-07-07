@@ -14,12 +14,13 @@
 	<script type="text/javascript" src="scripts/app.js"></script>
 	<script type="text/javascript" src="scripts/controllers/storeController.js"></script>
 	<script type="text/javascript" src="scripts/directives/storeDirective.js"></script>
+	<script type="text/javascript" src="scripts/filters/storeFilter.js"></script>
 </head>
-<body ng-controller="storeController as store">
+<body ng-controller="storeController">
 
 
 <div class="formular" ng-form="addForm">
-	<form name="addItem" ng-submit="addItem.$valid">
+<form name="addItem" ng-submit="addItem.$valid" novalidate>
 
 		<button ng-click="toggleCustom()">+</button>
 		<h2 ng-hide="custom">Adaugare produs:</h2>
@@ -33,7 +34,7 @@
 			<span class="eroare" style="color:red" ng-show="addForm.denumire.$error.required">Adaugati denumire!</span>
 		</div>
 		<span ng-show="custom"></span>
-	</form>
+</form>
 </div>
 
 <br>
@@ -47,13 +48,13 @@
 		<td style="width:100px; font-weight:bold">Denumire:</td>
 		<td style="width:100px; font-weight:bold">Amanunte:</td>
 	</tr>
-	<tr ng-repeat = "prod in products | filter:caut">
-		<td ng-class="{taiat:check}" style="width:150px" ng-show="prod.editare">{{prod.denumire}}</td>
-		<td ng-hide="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Denumire" type="text" ng-model="prod.denumire"></td>
-		<td ng-class="{taiat:check}" style="width:150px" ng-show="prod.editare">{{prod.amanunte}}</td>
-		<td ng-hide="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Amanunte" type="text" ng-model="prod.amanunte"></td>
-		<td style = "width:70px" ng-show="prod.editare" ng-click="editareShow(prod)"><button>Edit</button></td>
-		<td style = "width:70px" ng-hide="prod.editare" ng-click="salvareEditare(prod, prod.denumire, prod.amanunte)"><button>Save</button></td>
+	<tr ng-repeat = "prod in products | numeFiltru:caut">
+		<td ng-class="{taiat:check}" style="width:150px" ng-hide="prod.editare">{{prod.denumire}}</td>
+		<td ng-show="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Denumire" type="text" ng-model="prod.denumire"></td>
+		<td ng-class="{taiat:check}" style="width:150px" ng-hide="prod.editare">{{prod.amanunte}}</td>
+		<td ng-show="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Amanunte" type="text" ng-model="prod.amanunte"></td>
+		<td style = "width:70px" ng-hide="prod.editare" ng-click="editareShow(prod)"><button>Edit</button></td>
+		<td style = "width:70px" ng-show="prod.editare" ng-click="salvareEditare(prod, prod.denumire, prod.amanunte)"><button>Save</button></td>
 		<td><input type="checkbox" ng-model="check" ng-change="buyProducts(prod)"></td>
 	</tr>
 	<tr><td><br></td></tr>
