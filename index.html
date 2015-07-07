@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="genStore">
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Magazin</title>
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/css/css.css">
+	<script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
+	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+	<script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
+	<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript" src="scripts/controllers/storeController.js"></script>
+	<script type="text/javascript" src="scripts/directives/storeDirective.js"></script>
+</head>
+<body ng-controller="storeController as store">
+
+
+<div class="formular" ng-form="addForm">
+	<form name="addItem" ng-submit="addItem.$valid">
+
+		<button ng-click="toggleCustom()">+</button>
+		<h2 ng-hide="custom">Adaugare produs:</h2>
+		<input type="text" name="denumireProdus" id="prodDen" placeholder="Denumire produs" ng-model="denumire" ng-hide="custom" required>
+		<br>
+		<input type="text" name="amanunteProdus" id="prodAman" placeholder="Amanunte produs" ng-model="amanunte" ng-hide="custom">
+		<br>
+		<button type="button" class="btn btn-default" ng-disabled="addForm.$invalid" ng-click="addProducts(denumire, amanunte)" ng-hide="custom">Adauga</button>
+
+		<div class="eroare" ng-show="addForm.denumire.$dirty && addForm.denumire.$invalid">
+			<span class="eroare" style="color:red" ng-show="addForm.denumire.$error.required">Adaugati denumire!</span>
+		</div>
+		<span ng-show="custom"></span>
+	</form>
+</div>
+
+<br>
+<input type="text" name="cautareProdus" id="cautProd" placeholder="Cautare" ng-model="caut">
+
+<table class="listaProduse">
+	<tr>
+		<prod-list></prod-list>
+	</tr>
+	<tr>
+		<td style="width:100px; font-weight:bold">Denumire:</td>
+		<td style="width:100px; font-weight:bold">Amanunte:</td>
+	</tr>
+	<tr ng-repeat = "prod in products | filter:caut">
+		<td ng-class="{taiat:check}" style="width:150px" ng-show="prod.editare">{{prod.denumire}}</td>
+		<td ng-hide="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Denumire" type="text" ng-model="prod.denumire"></td>
+		<td ng-class="{taiat:check}" style="width:150px" ng-show="prod.editare">{{prod.amanunte}}</td>
+		<td ng-hide="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Amanunte" type="text" ng-model="prod.amanunte"></td>
+		<td style = "width:70px" ng-show="prod.editare" ng-click="editareShow(prod)"><button>Edit</button></td>
+		<td style = "width:70px" ng-hide="prod.editare" ng-click="salvareEditare(prod, prod.denumire, prod.amanunte)"><button>Save</button></td>
+		<td><input type="checkbox" ng-model="check" ng-change="buyProducts(prod)"></td>
+	</tr>
+	<tr><td><br></td></tr>
+	<tr style="width:100px"><td><button ng-click="delProducts()">Stergere</button></td></tr>
+
+</table>
+</body>
+</html>
+
+
