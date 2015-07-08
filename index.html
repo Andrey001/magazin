@@ -31,7 +31,7 @@
 		<button type="button" class="btn btn-default" ng-disabled="addForm.$invalid" ng-click="addProducts(denumire, amanunte)" ng-hide="custom">Adauga</button>
 
 		<div class="eroare" ng-show="addForm.denumire.$dirty && addForm.denumire.$invalid">
-			<span class="eroare" style="color:red" ng-show="addForm.denumire.$error.required">Adaugati denumire!</span>
+			<span class="eroare" ng-show="addForm.denumire.$error.required">Adaugati denumire!</span>
 		</div>
 		<span ng-show="custom"></span>
 </form>
@@ -45,22 +45,22 @@
 		<prod-list></prod-list>
 	</tr>
 	<tr>
-		<td style="width:100px; font-weight:bold">Denumire:</td>
-		<td style="width:100px; font-weight:bold">Amanunte:</td>
+		<td class="capTabel">Denumire:</td>
+		<td class="capTabel">Amanunte:</td>
 	</tr>
 	<tr ng-repeat = "prod in products | numeFiltru:caut">
-		<td ng-class="{taiat:check}" style="width:150px" ng-hide="prod.editare">{{prod.denumire}}</td>
-		<td ng-show="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Denumire" type="text" ng-model="prod.denumire"></td>
-		<td ng-class="{taiat:check}" style="width:150px" ng-hide="prod.editare">{{prod.amanunte}}</td>
-		<td ng-show="prod.editare" style="width:150px" ><input style="width:120px" placeholder="Amanunte" type="text" ng-model="prod.amanunte"></td>
-		<td style = "width:70px" ng-hide="prod.editare" ng-click="editareShow(prod)"><button>Edit</button></td>
-		<td style = "width:70px" ng-show="prod.editare" ng-click="salvareEditare(prod, prod.denumire, prod.amanunte)"><button>Save</button></td>
-		<td><input type="checkbox" ng-model="check" ng-change="buyProducts(prod)"></td>
+		<td class="elemente" ng-class="{taiat:prod.cumparat}" ng-hide="prod.editare">{{prod.denumire}}</td>
+		<td class="elemente" ng-show="prod.editare"><input class="editare" placeholder="Denumire" type="text" ng-model="prod.denumire"></td>
+		<td class="elemente" ng-class="{taiat:prod.cumparat}" ng-hide="prod.editare">{{prod.amanunte}}</td>
+		<td class="elemente" ng-show="prod.editare"><input class="editare" placeholder="Amanunte" type="text" ng-model="prod.amanunte"></td>
+		<td ng-hide="prod.editare" ng-click="editareShow(prod)"><button class="butoane">Edit</button></td>
+		<td ng-show="prod.editare" ng-click="salvareEditare(prod, prod.denumire, prod.amanunte)"><button class="butoane">Save</button></td>
+		<td><input class="butoane" name="checky" type="checkbox" ng-model="check" ng-change="buyProducts(prod)" ng-checked="prod.cumparat"></td>
 	</tr>
 	<tr><td><br></td></tr>
-	<tr style="width:100px"><td><button ng-click="delProducts()">Stergere</button></td></tr>
-
+	<tr><td><button id="del" ng-click="delProducts()">Stergere</button></td></tr>
 </table>
+<div id="mesaje" ng-show="msg"><br>{{status}}<br>{{mesaj}}</div>
 </body>
 </html>
 

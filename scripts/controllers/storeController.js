@@ -1,20 +1,18 @@
 genStore.controller('storeController', ['$scope', '$http','$location', function ($scope,$http,$location) {
 
-
-    //// lista de produse
-    //$scope.products = [
-    //    {
-    //        denumire: 'produs 1',
-    //        amanunte: 'descriere produs 1',
-    //        cumparat: false,
-    //        editare: false
-    //    }
-    //];
+    $scope.msg = false;
 
     $scope.reincarcare = function() {
         $http({url: 'http://localhost:8080/api/prods/', method: 'GET'})
             .success(function (data) {
                 $scope.products = data;
+                $scope.msg = true;
+                $scope.status = "S-au incarcat produsele";
+            })
+            .error(function (err) {
+                console.log(err);
+                $scope.msg = true;
+                $scope.status = "Nu s-a putut incarca produsele!";
             });
     };
 
@@ -29,52 +27,68 @@ genStore.controller('storeController', ['$scope', '$http','$location', function 
 
     // adaugare produse
     $scope.addProducts = function (den, aman) {
-        //    this.products.push(
-        //        {denumire: den,
-        //        amanunte: aman,
-        //        editare: false}
-        //    );
-        //    this.denumire="";
-        //    this.amanunte="";
-        //};
 
-        $http({url: 'http://localhost:8080/api/prods/', method: 'POST', data: {denumire: den, amanunte: aman, editare: false}})
+        $http({url: 'http://localhost:8080/api/prods/', method: 'POST', data: {denumire: den, amanunte: aman, cumparat: false, editare: false}})
             .success(function (data) {
                 $scope.products=data;
                 $scope.reincarcare();
+                $scope.msg = true;
+                $scope.mesaj = "S-a adaugat produsul!";
+            })
+            .error(function (err) {
+                console.log(err);
+                $scope.msg = true;
+                $scope.mesaj = "Nu s-a putut adauga produsul!";
             });
 
     };
-    //$scope.checkProd = function(produs,check) {
-    //    if(check === true) {
-    //        $(".checky").css({"text-decoration": "line-through"});
-    //    }
-    //    else {
-    //        $(".checky").css({"text-decoration": "none"});
-    //    }
-    //};
 
     // setare produs cumparat/necumparat
     $scope.buyProducts = function(prod) {
-        var i = $scope.products.indexOf(prod);
-        $scope.products[i].cumparat = !$scope.products[i].cumparat;
+        $http({url: 'http://localhost:8080/api/prods/' + prod._id, method: 'PUT', data: {denumire: prod.denumire, amanunte: prod.amanunte, editare: prod.editare, cumparat: !prod.cumparat}})
+            .success(function (data) {
+                $scope.products=data;
+                $scope.reincarcare();
+                $scope.msg = true;
+                $scope.mesaj = "S-a schimbat starea cumparat/necumparat";
+            })
+            .error(function (err) {
+                console.log(err);
+                $scope.msg = true;
+                $scope.mesaj = "Nu s-a putut schimba starea!";
+            });
     };
 
     // setare produs editare
     $scope.editareShow = function (prod) {
-        prod.editare = true;
+        $http({url: 'http://localhost:8080/api/prods/' + prod._id, method: 'PUT', data: {denumire: prod.denumire, amanunte: prod.amanunte, editare: true, cumparat: prod.cumparat}})
+            .success(function (data) {
+                $scope.products=data;
+                $scope.reincarcare();
+                $scope.msg = true;
+                $scope.mesaj = "Produsul a devenit editabil";
+            })
+            .error(function (err) {
+                console.log(err);
+                $scope.msg = true;
+                $scope.mesaj = "Produsul nu a putut deveni editabil!";
+            });
     };
 
     // salvare editare
     $scope.salvareEditare = function (prod, denNew, amanNew) {
-        //prod.editare = false;
-        //prod.denumire = denNew;
-        //prod.amanunte = amanNew;
 
-        $http({url: 'http://localhost:8080/api/prods/' + prod._id, method: 'PUT', data: {denumire: denNew, amanunte: amanNew, editare: false}})
+        $http({url: 'http://localhost:8080/api/prods/' + prod._id, method: 'PUT', data: {denumire: denNew, amanunte: amanNew, editare: false, cumparat: prod.cumparat}})
             .success(function (data) {
                 $scope.products=data;
                 $scope.reincarcare();
+                $scope.msg = true;
+                $scope.mesaj = "Produsul a fost actualizat";
+            })
+            .error(function (err) {
+                console.log(err);
+                $scope.msg = true;
+                $scope.mesaj = "Produsul nu a putut fi actualizat!";
             });
     };
 
@@ -88,17 +102,15 @@ genStore.controller('storeController', ['$scope', '$http','$location', function 
                     .success(function (data) {
                         $scope.products=data;
                         $scope.reincarcare();
+                        $scope.msg = true;
+                        $scope.mesaj = "Produsele au fost sterse";
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                        $scope.msg = true;
+                        $scope.mesaj = "Produsele nu au putut fi sterse";
                     });
             }
         }
     };
-
-    //// tentativa de filtrare ...
-    //$('#cautProdus').keyup(function() {
-    //    var textCautat = $(this).val().toLowerCase();
-    //    $('.listaProd>td').each(function() {
-    //        var campCautare = $(this).text().toLowerCase();
-    //        (campCautare.indexOf(textCautat) === 0) ? $(this).show() : $(this).hide();
-    //    });
-    //});
 }]);

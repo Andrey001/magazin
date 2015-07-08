@@ -1,3 +1,35 @@
 .taiat{
     text-decoration: line-through;
 }
+
+
+#mesaje{
+    color: #0000FF;
+    font-size: large;
+}
+
+.eroare{
+    color: #FF0000;
+}
+
+.capTabel{
+    width: 100px;
+    font-weight: bold;
+    color: #008800;
+}
+
+.elemente{
+    width: 150px;
+}
+
+.editare{
+    width: 130px;
+}
+
+.butoane{
+    width: 50px;
+}
+
+#del{
+    width: 70px;
+}

@@ -48,15 +48,16 @@ router.route('/prods')
         var prod = new Prod();              // creaza instanta noua de produs
         prod.denumire = req.body.denumire;  // seteaza denumirea produsului
         prod.amanunte = req.body.amanunte;  // seteaza amanuntele pentru produs
-        prod.cumparat = false;              // seteaza starea produsului ca necumparat
-        prod.editare  = false;              // seteaza starea produsului ca needitabil
+        prod.cumparat = req.body.cumparat;  // seteaza starea produsului ca necumparat
+        prod.editare  = req.body.editare;   // seteaza starea produsului ca needitabil
 
         // save the bear and check for errors
-        prod.save(function(err) {
+        prod.save(function(err, prods) {
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Produs creat!' });
+            //res.json({ message: 'Produs creat!' });
+            res.json(prods);
         });
 
     })
@@ -96,13 +97,16 @@ router.route('/prods/:prod_id')
 
             prod.denumire = req.body.denumire;  // update denumire produs
             prod.amanunte = req.body.amanunte;  // update amanunte produs
+            prod.cumparat = req.body.cumparat;  // update starea produs
+            prod.editare  = req.body.editare;
 
             // salvare produs
-            prod.save(function(err) {
+            prod.save(function(err, prods) {
                 if (err)
                     res.send(err);
 
-                res.json({ message: 'Produs updatat!' });
+                //res.json({ message: 'Produs updatat!' });
+                res.json(prods);
             });
 
         });
@@ -112,11 +116,12 @@ router.route('/prods/:prod_id')
     .delete(function(req, res) {
         Prod.remove({
             _id: req.params.prod_id
-        }, function(err, prod) {
+        }, function(err, prods) {
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Sters cu succes' });
+            //res.json({ message: 'Sters cu succes' });
+            res.json(prods);
         });
     });
 
