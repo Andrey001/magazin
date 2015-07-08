@@ -16,7 +16,7 @@ genStore.controller('storeController', ['$scope', '$http','$location', function 
             .success(function (data) {
                 $scope.products = data;
             });
-    }
+    };
 
     $scope.reincarcare();
 
@@ -74,6 +74,7 @@ genStore.controller('storeController', ['$scope', '$http','$location', function 
         $http({url: 'http://localhost:8080/api/prods/' + prod._id, method: 'PUT', data: {denumire: denNew, amanunte: amanNew, editare: false}})
             .success(function (data) {
                 $scope.products=data;
+                $scope.reincarcare();
             });
     };
 
@@ -86,6 +87,7 @@ genStore.controller('storeController', ['$scope', '$http','$location', function 
                 $http({url: 'http://localhost:8080/api/prods/' + $scope.products[i]._id, method: 'DELETE'})
                     .success(function (data) {
                         $scope.products=data;
+                        $scope.reincarcare();
                     });
             }
         }
